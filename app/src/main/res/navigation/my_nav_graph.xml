@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_nav_graph"
+    app:startDestination="@id/animalListFragment">
+    <fragment
+        android:id="@+id/animalListFragment"
+        android:name="com.android.mfcolak.animalsapp.view.AnimalListFragment"
+        android:label="fragment_animal_list"
+        tools:layout="@layout/fragment_animal_list" >
+        <action
+            android:id="@+id/action_animalListFragment_to_animalDetailFragment"
+            app:destination="@id/animalDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/animalDetailFragment"
+        android:name="com.android.mfcolak.animalsapp.view.AnimalDetailFragment"
+        android:label="fragment_animal_detail"
+        tools:layout="@layout/fragment_animal_detail" >
+        <action
+            android:id="@+id/action_animalDetailFragment_to_animalListFragment"
+            app:destination="@id/animalListFragment" />
+        <argument
+            android:name="AnimalId"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+</navigation>
