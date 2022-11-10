@@ -27,3 +27,5 @@ data class Animal(
     @PrimaryKey(autoGenerate = true) //Room
     var uuid : Int = 0
 }
+
+data class AnimalPalette(var color: Int)

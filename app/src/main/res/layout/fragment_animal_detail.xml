@@ -8,12 +8,17 @@
         <variable
             name="selectedAnimal"
             type="com.android.mfcolak.animalsapp.model.Animal" />
+        
+        <variable
+            name="palette"
+            type="com.android.mfcolak.animalsapp.model.AnimalPalette" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.AnimalDetailFragment">
+        tools:context=".view.AnimalDetailFragment"
+        android:background="@{palette.color}">
 
         <ImageView
             android:id="@+id/animalImage"

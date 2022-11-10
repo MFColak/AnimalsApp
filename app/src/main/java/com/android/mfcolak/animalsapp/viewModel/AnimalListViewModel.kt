@@ -8,18 +8,20 @@ import com.android.mfcolak.animalsapp.model.Animal
 import com.android.mfcolak.animalsapp.service.AnimalApiService
 import com.android.mfcolak.animalsapp.service.AnimalDatabase
 import com.android.mfcolak.animalsapp.util.CustomSharedPreferences
+import com.android.mfcolak.animalsapp.util.NotificationHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
+import java.lang.NumberFormatException
 
 class AnimalListViewModel(application: Application): BaseViewModel(application) {
 
     val animals = MutableLiveData<List<Animal>>()
     val errorMessage = MutableLiveData<Boolean>()
     val animalLoading = MutableLiveData<Boolean>()
-    private val updateTime = 5 * 60 * 1000 * 1000 * 1000L
+    private var updateTime = 5 * 60 * 1000 * 1000 * 1000L
 
     private val animalApiService = AnimalApiService()
     private val disposable = CompositeDisposable()
@@ -27,6 +29,7 @@ class AnimalListViewModel(application: Application): BaseViewModel(application) 
 
     fun refleshData(){
 
+        checkCacheTime()
         val time = customSharedPreferences.getCurrentTime()
         if (time != null && time != 0L && System.nanoTime() - time < updateTime)    //fetch data from remote after 5 minutes
         {
@@ -36,6 +39,19 @@ class AnimalListViewModel(application: Application): BaseViewModel(application) 
             fetchFromRemote()
         }
     }
+
+    private fun checkCacheTime() {
+        val cachePreference = customSharedPreferences.getCacheSize()
+
+        try {
+            val cachePreferenceInt = cachePreference?.toInt() ?: 5
+            updateTime = cachePreferenceInt.times(1000 * 1000 * 1000L)
+        } catch (e: NumberFormatException) {
+            e.printStackTrace()
+        }
+    }
+
+
     fun refleshFromInternet(){
         fetchFromRemote()
     }
@@ -61,6 +77,7 @@ class AnimalListViewModel(application: Application): BaseViewModel(application) 
                         keepInSqlite(t)
 
                         Toast.makeText(getApplication(), "Fetch data from INTERNET", Toast.LENGTH_LONG).show()
+                        NotificationHelper(getApplication()).createAnimalNotification()
                     }
 
                     override fun onError(e: Throwable) {

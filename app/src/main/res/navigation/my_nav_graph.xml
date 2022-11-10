@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_animalListFragment_to_animalDetailFragment"
             app:destination="@id/animalDetailFragment" />
+        <action
+            android:id="@+id/action_animalListFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
     </fragment>
     <fragment
         android:id="@+id/animalDetailFragment"
@@ -26,4 +29,9 @@
             app:argType="integer"
             android:defaultValue="0" />
     </fragment>
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.android.mfcolak.animalsapp.view.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" />
 </navigation>

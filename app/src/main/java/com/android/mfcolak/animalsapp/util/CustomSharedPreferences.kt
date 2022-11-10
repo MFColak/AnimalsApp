@@ -36,4 +36,7 @@ class CustomSharedPreferences {
     }
 
     fun getCurrentTime() = sharedPreferences?.getLong(TIME, 0)
+
+    fun getCacheSize() = sharedPreferences?.getString("cache_size", "")
 }
+

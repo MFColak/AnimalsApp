@@ -1,12 +1,14 @@
 package com.android.mfcolak.animalsapp.view
 import android.os.Bundle
+import android.view.*
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.mfcolak.animalsapp.R
 import com.android.mfcolak.animalsapp.adapter.AnimalRecyclerAdapter
@@ -14,7 +16,7 @@ import com.android.mfcolak.animalsapp.databinding.FragmentAnimalListBinding
 import com.android.mfcolak.animalsapp.model.Animal
 import com.android.mfcolak.animalsapp.viewModel.AnimalListViewModel
 
-class AnimalListFragment : Fragment() {
+class AnimalListFragment : Fragment() , MenuProvider{
 
     private lateinit var binding: FragmentAnimalListBinding
     private lateinit var animalListViewModel: AnimalListViewModel
@@ -24,12 +26,16 @@ class AnimalListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_animal_list, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
         animalListViewModel = ViewModelProvider(this).get(AnimalListViewModel::class.java)
         animalListViewModel.refleshData()
@@ -49,7 +55,7 @@ class AnimalListFragment : Fragment() {
         observeLiveData()
         }
 
-    fun observeLiveData(){
+    private fun observeLiveData(){
 
         animalListViewModel.animals.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -78,6 +84,24 @@ class AnimalListFragment : Fragment() {
         })
     }
 
+
+
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.list_menu, menu)
+    }
+
+    override fun onMenuItemSelected(item: MenuItem): Boolean {
+
+        return when(item.itemId){
+            R.id.settings ->{
+                Navigation.findNavController(binding.root)
+                    .navigate(AnimalListFragmentDirections.actionAnimalListFragmentToSettingFragment())
+                true
+            }
+            else -> return false
+        }
+
+    }
 
 
 }

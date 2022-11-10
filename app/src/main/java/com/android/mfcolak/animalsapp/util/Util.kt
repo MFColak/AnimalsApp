@@ -8,15 +8,15 @@ import com.android.mfcolak.animalsapp.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
-fun ImageView.downloadImage(url: String?, placeholder: CircularProgressDrawable){
+fun ImageView.downloadImage(url: String?, circularProgressDrawable: CircularProgressDrawable){
 
-    val options = RequestOptions().placeholder(placeholder).error(R.mipmap.ic_launcher)
-    Glide.with(context).setDefaultRequestOptions(options).load(url).into(this)
+    val options = RequestOptions().placeholder(circularProgressDrawable)
+    Glide.with(this.context).setDefaultRequestOptions(options).load(url).into(this)
 }
 
 fun createPlaceholder(context: Context) : CircularProgressDrawable{
     return CircularProgressDrawable(context).apply {
-        strokeWidth = 6f
+        strokeWidth = 8f
         centerRadius = 32f
         start()
     }
