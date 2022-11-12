@@ -21,11 +21,19 @@ data class Animal(
 
     @ColumnInfo(name = "image")
     @SerializedName("image")
-    val animalImage: String) {
+    val animalImage: String
+) {
 
 
     @PrimaryKey(autoGenerate = true) //Room
-    var uuid : Int = 0
+    var uuid: Int = 0
 }
 
 data class AnimalPalette(var color: Int)
+
+
+data class SmsInfo(
+    var to: String,
+    val text: String,
+    val imageUrl: String?
+)

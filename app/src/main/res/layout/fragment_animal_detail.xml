@@ -5,10 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable
-            name="selectedAnimal"
-            type="com.android.mfcolak.animalsapp.model.Animal" />
-        
+
         <variable
             name="palette"
             type="com.android.mfcolak.animalsapp.model.AnimalPalette" />
@@ -24,7 +21,6 @@
             android:id="@+id/animalImage"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:downloadImage="@{selectedAnimal.animalImage}"
             android:layout_margin="12dp"
             android:scaleType="fitCenter"
             app:layout_constraintEnd_toEndOf="parent"
@@ -36,8 +32,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="@{selectedAnimal.animalName}"
             android:textSize="20sp"
+            android:text="text1"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,8 +43,8 @@
             android:id="@+id/animalLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="text2"
             android:layout_margin="8dp"
-            android:text="@{selectedAnimal.animalLocation}"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -58,8 +54,8 @@
             android:id="@+id/animalLifespan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="text3"
             android:layout_margin="8dp"
-            android:text="@{selectedAnimal.animalLifeSpan}"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

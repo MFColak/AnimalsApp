@@ -7,29 +7,32 @@ import androidx.preference.PreferenceManager
 
 class CustomSharedPreferences {
 
-    companion object{
-        private val TIME ="time"
+    companion object {
+        private val TIME = "time"
         private var sharedPreferences: SharedPreferences? = null
 
-        @Volatile private var instance : CustomSharedPreferences? = null
+        @Volatile
+        private var instance: CustomSharedPreferences? = null
 
         private val lock = Any()
-        operator fun invoke(context: Context): CustomSharedPreferences = instance?: synchronized(lock){
+        operator fun invoke(context: Context): CustomSharedPreferences =
+            instance ?: synchronized(lock) {
 
-            instance?: createCustomSharedPreferences(context).also {
-                instance = it
+                instance ?: createCustomSharedPreferences(context).also {
+                    instance = it
+                }
+
             }
 
-        }
-
-        private fun createCustomSharedPreferences(context: Context): CustomSharedPreferences{
+        private fun createCustomSharedPreferences(context: Context): CustomSharedPreferences {
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
             return CustomSharedPreferences()
         }
 
     }
-    fun saveCurrentTime(time: Long){
-        sharedPreferences?.edit(commit = true){
+
+    fun saveCurrentTime(time: Long) {
+        sharedPreferences?.edit(commit = true) {
             putLong(TIME, time)
         }
 

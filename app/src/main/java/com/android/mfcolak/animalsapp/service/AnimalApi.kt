@@ -10,5 +10,5 @@ interface AnimalApi {
     // end_url  -> MFColak/JSONDataSet/main/data.json
 
     @GET("MFColak/JSONDataSet/main/data.json")
-    fun getAnimal() :Single <List<Animal>>
+    fun getAnimal(): Single<List<Animal>>
 }

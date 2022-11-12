@@ -13,13 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.mfcolak.animalsapp.R
 import com.android.mfcolak.animalsapp.adapter.AnimalRecyclerAdapter
 import com.android.mfcolak.animalsapp.databinding.FragmentAnimalListBinding
-import com.android.mfcolak.animalsapp.model.Animal
 import com.android.mfcolak.animalsapp.viewModel.AnimalListViewModel
 
 class AnimalListFragment : Fragment() , MenuProvider{
 
     private lateinit var binding: FragmentAnimalListBinding
-    private lateinit var animalListViewModel: AnimalListViewModel
+    private lateinit var viewModel: AnimalListViewModel
     private val animalRecyclerAdapter = AnimalRecyclerAdapter(arrayListOf())
 
     override fun onCreateView(
@@ -37,8 +36,8 @@ class AnimalListFragment : Fragment() , MenuProvider{
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
-        animalListViewModel = ViewModelProvider(this).get(AnimalListViewModel::class.java)
-        animalListViewModel.refleshData()
+        viewModel = ViewModelProvider(this)[AnimalListViewModel::class.java]
+        viewModel.refleshData()
 
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = animalRecyclerAdapter
@@ -48,7 +47,7 @@ class AnimalListFragment : Fragment() , MenuProvider{
             binding.loading.visibility = View.VISIBLE
             binding.errorMessage.visibility = View.GONE
             binding.recyclerView.visibility = View.GONE
-            animalListViewModel.refleshFromInternet()
+            viewModel.refleshFromInternet()
             binding.swipeRefleshLayout.isRefreshing = false
         }
 
@@ -57,21 +56,21 @@ class AnimalListFragment : Fragment() , MenuProvider{
 
     private fun observeLiveData(){
 
-        animalListViewModel.animals.observe(viewLifecycleOwner, Observer {
+        viewModel.animals.observe(viewLifecycleOwner, Observer {
             it?.let {
                 binding.recyclerView.visibility = View.VISIBLE
                 animalRecyclerAdapter.updateAnimalList(it)
             }
         })
 
-        animalListViewModel.errorMessage.observe(viewLifecycleOwner, Observer {
+        viewModel.errorMessage.observe(viewLifecycleOwner, Observer {
             it?.let {
 
                 binding.errorMessage.visibility = if (it) View.VISIBLE else View.GONE
             }
         })
 
-        animalListViewModel.animalLoading.observe(viewLifecycleOwner, Observer {
+        viewModel.animalLoading.observe(viewLifecycleOwner, Observer {
             it?.let {
                 if (it){
                     binding.recyclerView.visibility = View.GONE
@@ -92,8 +91,8 @@ class AnimalListFragment : Fragment() , MenuProvider{
 
     override fun onMenuItemSelected(item: MenuItem): Boolean {
 
-        return when(item.itemId){
-            R.id.settings ->{
+        return when (item.itemId) {
+            R.id.settings -> {
                 Navigation.findNavController(binding.root)
                     .navigate(AnimalListFragmentDirections.actionAnimalListFragmentToSettingFragment())
                 true
